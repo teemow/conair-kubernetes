@@ -2,12 +2,12 @@
 ConditionFileIsExecutable=/opt/bin/proxy
 Description=Kubernetes Proxy
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
-Requires=coreos-setup-environment.service
-After=coreos-setup-environment.service
+Requires=conair-setup-environment.service
+After=conair-setup-environment.service
 
 [Service]
 EnvironmentFile=/etc/environment
-ExecStart=/opt/bin/proxy --etcd_servers=http://${COREOS_PUBLIC_IPV4}:4001 --logtostderr=true
+ExecStart=/opt/bin/proxy --etcd_servers=http://${CONAIR_PUBLIC_IPV4}:4001 --logtostderr=true
 Restart=on-failure
 RestartSec=1
 

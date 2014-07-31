@@ -1,17 +1,5 @@
-FROM base
+FROM docker
 MAINTAINER Timo Derstappen <teemow@gmail.com>
-
-PKG sudo docker openssh nmap wget
-
-# add core user
-RUN useradd -m -G wheel -s /bin/bash core
-RUN echo core:coreos | chpasswd
-RUN echo "%sudo ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/core
-RUN echo "core ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/core
-
-# install docker service for kubernetes
-RUN getent group docker >/dev/null || groupadd -g 142 docker
-RUN usermod -aG docker core
 
 # etcd
 RUN useradd -m -s /usr/bin/nologin -d /var/lib/etcd etcd
@@ -21,20 +9,15 @@ RUN mkdir -p /opt/bin
 RUN wget http://storage.googleapis.com/kubernetes/binaries.tar.gz
 RUN tar -xvf binaries.tar.gz -C /opt/bin
 
-# setup environment
-ADD bin/coreos-setup-environment /usr/local/bin/coreos-setup-environment
-
 # copy etcd
 ADD bin/etcdctl0.4.5 /usr/local/bin/etcdctl
 ADD bin/etcd0.4.5+git /usr/local/bin/etcd
 
 # units kopieren
-ADD config/coreos-setup-environment.service /etc/systemd/system/
-ADD config/docker.service /etc/systemd/system
 ADD config/etcd.service /etc/systemd/system
 ADD config/apiserver.service /etc/systemd/system
 ADD config/controller-manager.service /etc/systemd/system
 ADD config/kubelet.service /etc/systemd/system
 ADD config/proxy.service /etc/systemd/system
 
-ENABLE etcd docker coreos-setup-environment sshd systemd-networkd-wait-online apiserver controller-manager kubelet proxy
+ENABLE etcd apiserver controller-manager kubelet proxy

@@ -1,14 +1,14 @@
 [Unit]
 Description=etcd
-Requires=coreos-setup-environment.service
-After=coreos-setup-environment.service
+Requires=conair-setup-environment.service
+After=conair-setup-environment.service
 
 [Service]
 User=etcd
 PermissionsStartOnly=true
 EnvironmentFile=/etc/environment
 Environment=ETCD_DATA_DIR=/var/lib/etcd
-ExecStart=/usr/local/bin/etcd -addr ${COREOS_PUBLIC_IPV4}:4001 -peer-addr ${COREOS_PUBLIC_IPV4}:7001 -name %m
+ExecStart=/usr/local/bin/etcd -addr ${CONAIR_PUBLIC_IPV4}:4001 -peer-addr ${CONAIR_PUBLIC_IPV4}:7001 -name %m
 Restart=always
 RestartSec=10s
 

@@ -2,16 +2,16 @@
 ConditionFileIsExecutable=/opt/bin/apiserver
 Description=Kubernetes API Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
-Requires=coreos-setup-environment.service
-After=coreos-setup-environment.service
+Requires=conair-setup-environment.service
+After=conair-setup-environment.service
 
 [Service]
 EnvironmentFile=/etc/environment
 ExecStart=/opt/bin/apiserver \
---address=${COREOS_PUBLIC_IPV4} \
+--address=${CONAIR_PUBLIC_IPV4} \
 --port=8080 \
---etcd_servers=http://${COREOS_PUBLIC_IPV4}:4001 \
---machines=${COREOS_PUBLIC_IPV4} \
+--etcd_servers=http://${CONAIR_PUBLIC_IPV4}:4001 \
+--machines=${CONAIR_PUBLIC_IPV4} \
 --logtostderr=true
 Restart=on-failure
 RestartSec=1
